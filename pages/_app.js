@@ -1,5 +1,9 @@
-import '@/styles/globals.css'
+import { useState } from "react";
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+function MyApp({ Component, pageProps }) {
+  const [sender, setSender] = useState("");
+
+  return <Component sender={sender} setSender={setSender} {...pageProps} />;
 }
+
+export default MyApp;
