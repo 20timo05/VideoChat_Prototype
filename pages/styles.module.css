@@ -1,0 +1,35 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: white;
+  align-self: flex-start;
+  border-bottom: 1px solid white;
+}
+
+.videosWrapper {
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5rem;
+}
+
+.videosWrapper > video {
+  max-height: 30vh;
+  max-width: 70vw;
+}
+
+.videosWrapper > div {
+  display: flex;
+  gap: 2rem;
+}
+
+.videosWrapper > div > video {
+  border: 1px solid white;
+  max-width: calc(100vw / 3 - 2 * 2rem);
+}
