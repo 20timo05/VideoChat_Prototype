@@ -13,10 +13,13 @@ export default function Chat() {
   const userVideo = useRef();
   const [streams, setStreams] = useState([]);
 
+  const [mute, setMute] = useState(false);
+  const [showCam, setShowCam] = useState(true);
+
   useEffect(() => {
     if (!userVideo?.current) return;
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
+      .getUserMedia({ video: showCam, audio: !mute })
       .then((stream) => {
         userVideo.current.srcObject = stream;
         setMyStream(stream);
@@ -138,18 +141,33 @@ export default function Chat() {
     return peer;
   }
 
+  function toggleMicCamHandler(device) {
+    const track = myStream.getTracks().find((track) => track.kind === device);
+    track.enabled = !track.enabled;
+    if (device === "audio") setMute((prev) => !prev);
+    else if (device === "video") setShowCam((prev) => !prev);
+  }
+
   return (
     <>
       <header className={styles.header}>
         <h1>Hello, {currentLoggedInUser}</h1>
       </header>
       <div className={styles.videosWrapper}>
-        <video playsInline muted ref={userVideo} autoPlay />
-        <div>
+        <div className={styles.videoControlsWrapper}>
+          <button onClick={() => toggleMicCamHandler("audio")}>
+            {mute ? "Mute Mic" : "Unmute Mic"}
+          </button>
+          <button onClick={() => toggleMicCamHandler("video")}>
+            {showCam ? "Hide Cam" : "Show Cam"}
+          </button>
+          <video playsInline muted ref={userVideo} autoPlay />
+        </div>
+        <footer>
           {streams.map(({ stream, peerID }) => (
             <Video key={peerID} stream={stream} />
           ))}
-        </div>
+        </footer>
       </div>
     </>
   );
